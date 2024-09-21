@@ -1,4 +1,3 @@
-from random import choice
 from rest_framework import serializers
 from drones.models import DroneCategory, Drone, Pilot, Competition
 
