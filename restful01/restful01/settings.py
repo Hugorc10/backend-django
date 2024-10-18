@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     # Toys application
     'toys.apps.ToysConfig',
     # Drones application
-    'drones.apps.DronesConfig'
+    'drones.apps.DronesConfig',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -127,13 +128,27 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DEFAULT_PARSER_CLASSES = [
-    'rest_framework.parsers.JSONParser',
-    'rest_framework.parsers.FormParser',
-    'rest_framework.parsers.MultiPartParser',
-]
+# DEFAULT_PARSER_CLASSES = [
+#     'rest_framework.parsers.JSONParser',
+#     'rest_framework.parsers.FormParser',
+#     'rest_framework.parsers.MultiPartParser',
+# ]
 
-DEFAULT_RENDERER_CLASSES = [
-    'rest_framework.renderers.JSONRenderer',
-    'rest_framework.renderers.BrowsableAPIRenderer',
-]
+# DEFAULT_RENDERER_CLASSES = [
+#     'rest_framework.renderers.JSONRenderer',
+#     'rest_framework.renderers.BrowsableAPIRenderer',
+# ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'drones.pagination.LimitOffsetPaginationWithUpperBound',
+    'PAGE_SIZE': 4,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
