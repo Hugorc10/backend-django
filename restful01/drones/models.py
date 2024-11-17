@@ -1,8 +1,12 @@
 from django.db import models
 
-# Create your models here.
+"""_summary_
+
+Returns:
+    _type_: _description_
+"""
 class DroneCategory(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
 
     class Meta:
         ordering = ('name',)
@@ -10,13 +14,18 @@ class DroneCategory(models.Model):
     def __str__(self):
         return self.name
 
+"""_summary_
+
+Returns:
+    _type_: _description_
+"""
 class Drone(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, unique=True)
     drone_category = models.ForeignKey(DroneCategory, related_name='drones', on_delete=models.CASCADE)
     manufacturing_date = models.DateTimeField()
     has_it_competed = models.BooleanField(default=False)
     inserted_timestamp = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey('auth.User', related_name='drones', on_delete=models.CASCADE)
+    owner = models.ForeignKey('auth.User', related_name='drones', on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ('name',)
@@ -28,7 +37,7 @@ class Pilot(models.Model):
     MALE = 'M'
     FEMALE = 'F'
     GENDER_CHOICES = ((MALE, 'Male'), (FEMALE, 'Female'),)
-    name = models.CharField(max_length=150, blank=False, default='')
+    name = models.CharField(max_length=150, blank=False, unique=True)
     gender = models.CharField(max_length=2, choices=GENDER_CHOICES, default=MALE,)
     races_count = models.IntegerField(default=0)
     inserted_timestamp = models.DateTimeField(auto_now_add=True)
